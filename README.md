@@ -39,11 +39,10 @@
 
 - 인프라 구축
   - RDS: Public Subnet에 MySQL 생성
-    ![img.png](image/lv2_RDS.png)
-    ![img_1.png](image/lv2_EC2.png)
   - 보안 그룹 체이닝: STEP1에서 생성한 EC2 보안 그룹ID만 허용
+   ![img.png](image/lv2_security_chaining.png)
   - Parameter Store: DB 접속 정보(url, username, password)와 확인용 파라미터 저장
-  ![img.png](image/lv2_actuator_info.png)
+   ![img.png](image/lv2_actuator.png)
 
 </details>
 
@@ -96,6 +95,31 @@
 👉 자세한 정리
 
 https://velog.io/@gpekd5/Cloud-%EA%B3%BC%EC%A0%9C-TroubleShooting-EC2-%EC%A0%91%EC%86%8D-%ED%9B%84-%EC%9A%B4%EC%98%81%ED%99%98%EA%B2%BD-%EC%8B%A4%ED%96%89-%EC%98%A4%EB%A5%98
+
+</details>
+
+<details>
+<summary>2. AWS 보안 그룹 설정 오류 수정</summary>
+
+#### 문제
+- RDS 접근 설정을 구성하는 과정에서 `EC2 보안 그룹`에 `3306` 규칙을 추가하여 RDS 접근 제어와 혼동
+
+#### 원인
+- 과제 요구사항의 “RDS 인바운드에 EC2 보안 그룹 ID만 허용”이라는 내용을 보고,
+  EC2 보안 그룹 자체에 `3306` 규칙을 추가하는 것으로 잘못 이해
+- EC2 보안 그룹과 RDS 보안 그룹이 각각 다른 리소스의 인바운드 트래픽을 제어한다는 점을 구분하지 못함
+
+#### 해결
+- EC2 보안 그룹에서는 `3306` 규칙 제거
+- RDS 전용 보안 그룹을 생성하고, RDS 인바운드 `3306` 소스를 EC2 보안 그룹으로 지정
+- SSH `22` 포트는 전체 공개가 아닌 내 IP(`/32`)만 허용
+
+#### 느낀 점
+- 보안 그룹 설정은 포트만 여는 것이 아니라, 어떤 리소스로 들어오는 요청인지 기준으로 분리해서 이해 필요
+
+👉 자세한 정리
+
+https://velog.io/@gpekd5/Cloud-%EA%B3%BC%EC%A0%9C-TroubleShooting-%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B3%B5%EC%9C%A0-%EB%AC%B8%EC%A0%9C
 
 </details>
 
