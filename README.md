@@ -39,14 +39,28 @@
 
 - 인프라 구축
   - RDS: Public Subnet에 MySQL 생성
-    ![img.png](image/lv2_RDS.png)
-    ![img_1.png](image/lv2_EC2.png)
   - 보안 그룹 체이닝: STEP1에서 생성한 EC2 보안 그룹ID만 허용
+   ![img.png](image/lv2_security_chaining.png)
   - Parameter Store: DB 접속 정보(url, username, password)와 확인용 파라미터 저장
-  ![img.png](image/lv2_actuator_info.png)
+   ![img.png](image/lv2_actuator.png)
 
 </details>
 
+<details>
+<summary>LV3. 프로필 사진 기능 추가와 권한 관리</summary>
+
+- 인프라 구축
+  - S3 버킷 생성: "모든 퍼블릭 액세스 차단"
+  - IAM Role, IAM Policy 생성
+- API 구현
+  - 프로필 이미지 S3 버킷 업로드 및 이미지 URL DB 업데이트
+  - Presigned URL 반환
+  - postman 캡쳐 이미지
+  ![img.png](image/lv3_postman.png)
+  - s3 저장 이미지 
+  ![img_1.png](image/lv3_S3.png)
+URL: https://cloudproject-hglfjeklsd-files-331608077829-ap-northeast-2-an.s3.ap-northeast-2.amazonaws.com/uploads/profiles/2/245efb8c-690e-44b7-946e-ff7b0f0baedc-profile_2.png?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEA0aDmFwLW5vcnRoZWFzdC0yIkcwRQIgcgXsptKSmnXoVmS%2Fw36Z0whrtUfEqFh9LixWOfnGLf4CIQCrgtJ3DyXKZrvRDQsZ8V5FyECKN%2BaOsPNRvsobCMhTsyrSBQjX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAAaDDMzMTYwODA3NzgyOSIMU7Y418kaiK08JCh9KqYFdRKIYXri5sdwAnD1aAJEvNlWxRnZXLJsLAooI%2BliX2HjP1bEB8x1O0BYVSH4que%2F8f8Oy%2BkbVdtIyg9fJ5aJ2RPyn6ERHKP%2Fxye%2BWtqy%2BkoD2bknNqTX2Rq6%2Fj8c57NDo4Qfih%2Fg%2FM1t8h4qBh6VL%2BLu2lvsjqj7AL24JzI9BZ4FeuihKOref4qm2tDrOQ7xntQhZfKdcju8b48ukhWOY6lcbjcBx2nUrvQSihzvFDPwXsMI608KTGbgiL0dcxJYbtc%2FI0jov3CdeqIRPazC18pcqMqD%2BBCluPT%2F4agOyld5dbcekGiH0BcWQbH65r2DJst39Xp2%2B%2FCzbJ0Pl70zXqHVCg0mYA4llYi6RTpgjN2%2FolXv2Dvi7EXb4A3JnoyNKTV%2B8QEKBYiGIRynb0h0DpWirmwmg4Od6hjestlATBIsS1k74ulH32FsFtfarmrDAZs%2FoJmfTRj3Owk9jW91aVQJol2Xv04OJgTKVsJ8ut3EJBZudKnkAbK6NmZp4RbF3S%2FGw6psm3TH7A%2BK%2Ftf0%2BpAzKWxYMXCmM6MBslDzSPl%2Fh53Jp9lGoTk9cOH047GgBP6YGZAtCrIzoyj1ZHdokXOv4F5cos05ZNF49YJQC6w9dAwN1uwrlt16aV%2BrF0Iuklp3khGmCdmrbnWR%2F12O2pA6pFekXyhUKfwvvKoTsa4qXG7f9drmOnJ1VJ1EcGomkusJDwpP6F8m%2BTqwEKHi8t%2BBC66eB4vnYiuCGekMD3HK8m7RBqaQkzsRpckrCTrEjiTNVFi00TvhDFVuvBzdMYI%2FPkHCy1FWLR32zNy%2F%2BURyUM%2Bc0QRlukl6T%2BLYxCXsJgKuZFzkHTGHNepY2uiq4F89IWvP8rMWkXXyKKVQOl2KoCYIva9YV%2B14JgdSNhyhIilW%2FluDMIHLsdAGOrEBtahb1PSeoWWUz1mCvOmn8CCFmZb1ZC11tmncFdKHCqq9MiE8TEhciFwKnowA6pWQ74iBcnOzDvQKsfxuX1Moo%2FKA%2Bzb6%2FBDY9KFDTjTHb5mNjXdZQc3sNR4u2DpYJIdjzUqHXfNC30OE8C5PZ9asjs1oZXP6E4m%2FbvpFAq0j3PaU%2B5GDtAidmBcyL7cuOB8qJKeBlezBQ3Af9qyHdsZCUTgnX1f%2FI5Lr6ugOpmb8nhZd&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260519T141029Z&X-Amz-SignedHeaders=host&X-Amz-Credential=ASIAU2NLBWYC7LK23ZJY%2F20260519%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Expires=604800&X-Amz-Signature=e805bae63fc20c45aa8a0f1cf60cc5a26ce6c7607f43d0d611f0d82f42c1a62f 
+</details>
 
 
 
@@ -96,6 +110,31 @@
 👉 자세한 정리
 
 https://velog.io/@gpekd5/Cloud-%EA%B3%BC%EC%A0%9C-TroubleShooting-EC2-%EC%A0%91%EC%86%8D-%ED%9B%84-%EC%9A%B4%EC%98%81%ED%99%98%EA%B2%BD-%EC%8B%A4%ED%96%89-%EC%98%A4%EB%A5%98
+
+</details>
+
+<details>
+<summary>2. AWS 보안 그룹 설정 오류 수정</summary>
+
+#### 문제
+- RDS 접근 설정을 구성하는 과정에서 `EC2 보안 그룹`에 `3306` 규칙을 추가하여 RDS 접근 제어와 혼동
+
+#### 원인
+- 과제 요구사항의 “RDS 인바운드에 EC2 보안 그룹 ID만 허용”이라는 내용을 보고,
+  EC2 보안 그룹 자체에 `3306` 규칙을 추가하는 것으로 잘못 이해
+- EC2 보안 그룹과 RDS 보안 그룹이 각각 다른 리소스의 인바운드 트래픽을 제어한다는 점을 구분하지 못함
+
+#### 해결
+- EC2 보안 그룹에서는 `3306` 규칙 제거
+- RDS 전용 보안 그룹을 생성하고, RDS 인바운드 `3306` 소스를 EC2 보안 그룹으로 지정
+- SSH `22` 포트는 전체 공개가 아닌 내 IP(`/32`)만 허용
+
+#### 느낀 점
+- 보안 그룹 설정은 포트만 여는 것이 아니라, 어떤 리소스로 들어오는 요청인지 기준으로 분리해서 이해 필요
+
+👉 자세한 정리
+
+https://velog.io/@gpekd5/Cloud-%EA%B3%BC%EC%A0%9C-TroubleShooting-%EB%B0%A9%ED%99%94%EB%B2%BD-%EA%B3%B5%EC%9C%A0-%EB%AC%B8%EC%A0%9C
 
 </details>
 
