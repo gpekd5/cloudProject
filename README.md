@@ -46,6 +46,21 @@
 
 </details>
 
+<details>
+<summary>LV3. 프로필 사진 기능 추가와 권한 관리</summary>
+
+- 인프라 구축
+  - S3 버킷 생성: "모든 퍼블릭 액세스 차단"
+  - IAM Role, IAM Policy 생성
+- API 구현
+  - 프로필 이미지 S3 버킷 업로드 및 이미지 URL DB 업데이트
+  - Presigned URL 반환
+  - postman 캡쳐 이미지
+  ![img.png](image/lv3_postman.png)
+  - s3 저장 이미지 
+  ![img_1.png](image/lv3_S3.png)
+URL: https://cloudproject-hglfjeklsd-files-331608077829-ap-northeast-2-an.s3.ap-northeast-2.amazonaws.com/uploads/profiles/2/245efb8c-690e-44b7-946e-ff7b0f0baedc-profile_2.png?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEA0aDmFwLW5vcnRoZWFzdC0yIkcwRQIgcgXsptKSmnXoVmS%2Fw36Z0whrtUfEqFh9LixWOfnGLf4CIQCrgtJ3DyXKZrvRDQsZ8V5FyECKN%2BaOsPNRvsobCMhTsyrSBQjX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAAaDDMzMTYwODA3NzgyOSIMU7Y418kaiK08JCh9KqYFdRKIYXri5sdwAnD1aAJEvNlWxRnZXLJsLAooI%2BliX2HjP1bEB8x1O0BYVSH4que%2F8f8Oy%2BkbVdtIyg9fJ5aJ2RPyn6ERHKP%2Fxye%2BWtqy%2BkoD2bknNqTX2Rq6%2Fj8c57NDo4Qfih%2Fg%2FM1t8h4qBh6VL%2BLu2lvsjqj7AL24JzI9BZ4FeuihKOref4qm2tDrOQ7xntQhZfKdcju8b48ukhWOY6lcbjcBx2nUrvQSihzvFDPwXsMI608KTGbgiL0dcxJYbtc%2FI0jov3CdeqIRPazC18pcqMqD%2BBCluPT%2F4agOyld5dbcekGiH0BcWQbH65r2DJst39Xp2%2B%2FCzbJ0Pl70zXqHVCg0mYA4llYi6RTpgjN2%2FolXv2Dvi7EXb4A3JnoyNKTV%2B8QEKBYiGIRynb0h0DpWirmwmg4Od6hjestlATBIsS1k74ulH32FsFtfarmrDAZs%2FoJmfTRj3Owk9jW91aVQJol2Xv04OJgTKVsJ8ut3EJBZudKnkAbK6NmZp4RbF3S%2FGw6psm3TH7A%2BK%2Ftf0%2BpAzKWxYMXCmM6MBslDzSPl%2Fh53Jp9lGoTk9cOH047GgBP6YGZAtCrIzoyj1ZHdokXOv4F5cos05ZNF49YJQC6w9dAwN1uwrlt16aV%2BrF0Iuklp3khGmCdmrbnWR%2F12O2pA6pFekXyhUKfwvvKoTsa4qXG7f9drmOnJ1VJ1EcGomkusJDwpP6F8m%2BTqwEKHi8t%2BBC66eB4vnYiuCGekMD3HK8m7RBqaQkzsRpckrCTrEjiTNVFi00TvhDFVuvBzdMYI%2FPkHCy1FWLR32zNy%2F%2BURyUM%2Bc0QRlukl6T%2BLYxCXsJgKuZFzkHTGHNepY2uiq4F89IWvP8rMWkXXyKKVQOl2KoCYIva9YV%2B14JgdSNhyhIilW%2FluDMIHLsdAGOrEBtahb1PSeoWWUz1mCvOmn8CCFmZb1ZC11tmncFdKHCqq9MiE8TEhciFwKnowA6pWQ74iBcnOzDvQKsfxuX1Moo%2FKA%2Bzb6%2FBDY9KFDTjTHb5mNjXdZQc3sNR4u2DpYJIdjzUqHXfNC30OE8C5PZ9asjs1oZXP6E4m%2FbvpFAq0j3PaU%2B5GDtAidmBcyL7cuOB8qJKeBlezBQ3Af9qyHdsZCUTgnX1f%2FI5Lr6ugOpmb8nhZd&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260519T141029Z&X-Amz-SignedHeaders=host&X-Amz-Credential=ASIAU2NLBWYC7LK23ZJY%2F20260519%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Expires=604800&X-Amz-Signature=e805bae63fc20c45aa8a0f1cf60cc5a26ce6c7607f43d0d611f0d82f42c1a62f 
+</details>
 
 
 
