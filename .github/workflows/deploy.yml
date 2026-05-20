@@ -12,6 +12,12 @@ jobs:
   # 1. PR / main 공통: 빌드 및 테스트
   ci:
     runs-on: ubuntu-latest
+    env:
+      SPRING_PROFILES_ACTIVE: local
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_REGION: ap-northeast-2
+      S3_BUCKET_NAME: test-bucket
 
     steps:
       # GitHub Repository 코드 가져오기
@@ -32,8 +38,6 @@ jobs:
       # Spring Boot 애플리케이션 빌드 및 테스트
       - name: Build and test
         run: ./gradlew clean build
-        env:
-          SPRING_PROFILES_ACTIVE: local
 
   # 2. main push일 때만 Docker Hub Push
   build-and-push:
