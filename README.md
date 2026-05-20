@@ -62,7 +62,39 @@
 URL: https://cloudproject-hglfjeklsd-files-331608077829-ap-northeast-2-an.s3.ap-northeast-2.amazonaws.com/uploads/profiles/2/245efb8c-690e-44b7-946e-ff7b0f0baedc-profile_2.png?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEA0aDmFwLW5vcnRoZWFzdC0yIkcwRQIgcgXsptKSmnXoVmS%2Fw36Z0whrtUfEqFh9LixWOfnGLf4CIQCrgtJ3DyXKZrvRDQsZ8V5FyECKN%2BaOsPNRvsobCMhTsyrSBQjX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAAaDDMzMTYwODA3NzgyOSIMU7Y418kaiK08JCh9KqYFdRKIYXri5sdwAnD1aAJEvNlWxRnZXLJsLAooI%2BliX2HjP1bEB8x1O0BYVSH4que%2F8f8Oy%2BkbVdtIyg9fJ5aJ2RPyn6ERHKP%2Fxye%2BWtqy%2BkoD2bknNqTX2Rq6%2Fj8c57NDo4Qfih%2Fg%2FM1t8h4qBh6VL%2BLu2lvsjqj7AL24JzI9BZ4FeuihKOref4qm2tDrOQ7xntQhZfKdcju8b48ukhWOY6lcbjcBx2nUrvQSihzvFDPwXsMI608KTGbgiL0dcxJYbtc%2FI0jov3CdeqIRPazC18pcqMqD%2BBCluPT%2F4agOyld5dbcekGiH0BcWQbH65r2DJst39Xp2%2B%2FCzbJ0Pl70zXqHVCg0mYA4llYi6RTpgjN2%2FolXv2Dvi7EXb4A3JnoyNKTV%2B8QEKBYiGIRynb0h0DpWirmwmg4Od6hjestlATBIsS1k74ulH32FsFtfarmrDAZs%2FoJmfTRj3Owk9jW91aVQJol2Xv04OJgTKVsJ8ut3EJBZudKnkAbK6NmZp4RbF3S%2FGw6psm3TH7A%2BK%2Ftf0%2BpAzKWxYMXCmM6MBslDzSPl%2Fh53Jp9lGoTk9cOH047GgBP6YGZAtCrIzoyj1ZHdokXOv4F5cos05ZNF49YJQC6w9dAwN1uwrlt16aV%2BrF0Iuklp3khGmCdmrbnWR%2F12O2pA6pFekXyhUKfwvvKoTsa4qXG7f9drmOnJ1VJ1EcGomkusJDwpP6F8m%2BTqwEKHi8t%2BBC66eB4vnYiuCGekMD3HK8m7RBqaQkzsRpckrCTrEjiTNVFi00TvhDFVuvBzdMYI%2FPkHCy1FWLR32zNy%2F%2BURyUM%2Bc0QRlukl6T%2BLYxCXsJgKuZFzkHTGHNepY2uiq4F89IWvP8rMWkXXyKKVQOl2KoCYIva9YV%2B14JgdSNhyhIilW%2FluDMIHLsdAGOrEBtahb1PSeoWWUz1mCvOmn8CCFmZb1ZC11tmncFdKHCqq9MiE8TEhciFwKnowA6pWQ74iBcnOzDvQKsfxuX1Moo%2FKA%2Bzb6%2FBDY9KFDTjTHb5mNjXdZQc3sNR4u2DpYJIdjzUqHXfNC30OE8C5PZ9asjs1oZXP6E4m%2FbvpFAq0j3PaU%2B5GDtAidmBcyL7cuOB8qJKeBlezBQ3Af9qyHdsZCUTgnX1f%2FI5Lr6ugOpmb8nhZd&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260519T141029Z&X-Amz-SignedHeaders=host&X-Amz-Credential=ASIAU2NLBWYC7LK23ZJY%2F20260519%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Expires=604800&X-Amz-Signature=e805bae63fc20c45aa8a0f1cf60cc5a26ce6c7607f43d0d611f0d82f42c1a62f 
 </details>
 
+<details>
+<summary>LV4. Docker & CI/CD 파이프라인 구축</summary>
 
+- Docker 도입
+  - `Dockerfile`을 작성하여 Spring Boot 애플리케이션을 Docker 이미지로 빌드
+  - 운영 DB는 Docker MySQL이 아닌 기존 AWS RDS MySQL 사용
+
+- Github Actions CI/CD 구성
+  - `.github/workflows/deploy.yml` 작성
+  - PR 생성 시 Build & Test 수행
+  - main 브랜치에 merge/push 될 경우 Docker 이미지 빌드 및 Docker Hub Push 수행
+  - Docker Hub 이미지: `gpekd5/cloudproject:latest`
+
+- EC2 자동 배포
+  - SSH 포트 개방 및 Private Key 저장을 피하기 위해 OIDC + AWS Systems Manager Run Command 방식 사용
+  - Github Actions가 OIDC로 AWS 임시 권한을 획득
+  - SSM Run Command를 통해 EC2 내부에서 `docker pull`, `docker run` 명령 실행
+  - EC2에서는 Docker Hub의 최신 이미지를 Pull 받아 기존 컨테이너를 교체 실행
+
+- 보안 구성
+  - Docker Hub Access Token은 Github Secrets로 관리
+  - AWS Role ARN, EC2 Instance ID는 Github Actions 설정값으로 관리
+  - EC2는 `CloudProjectEC2S3Role`을 통해 Parameter Store, S3, SSM 권한 사용
+  - SSH 22번 포트를 Github Actions에 개방하지 않고 배포 수행 (내IP만 허용)
+
+- 과제 제출 캡처
+  - Github Actions 성공 화면
+  ![img.png](image/lv4_github_actions.png)
+
+  - EC2에서 `sudo docker ps` 실행 결과
+  ![img_1.png](image/lv4_ec2_ps.png)
+
+</details>
 
 ---
 
@@ -138,6 +170,36 @@ https://velog.io/@gpekd5/Cloud-%EA%B3%BC%EC%A0%9C-TroubleShooting-%EB%B0%A9%ED%9
 
 </details>
 
+<details>
+<summary>3. GitHub Actions CI/CD 및 EC2 자동 배포 구성 문제</summary>
+
+#### 문제
+- GitHub Actions를 통해 Docker Hub에 이미지를 Push하고 EC2에 자동 배포하는 과정에서 여러 오류 발생
+- 초기 SSH 배포 방식에서는 EC2 보안 그룹의 `22` 포트 개방 범위 문제가 발생
+- 이후 SSM Run Command 방식으로 변경하는 과정에서 테스트 환경변수, JAR 파일 누락, SSM 관리형 노드 미등록, Docker 미설치 문제 발생
+
+#### 원인
+- GitHub Actions 테스트 환경에 `S3_BUCKET_NAME`, `AWS_REGION` 등 환경변수가 없어 Spring Context 로딩 실패
+- GitHub Actions의 Job 간 실행 환경이 분리되어 `ci` Job에서 생성한 JAR 파일이 `build-and-push` Job에 공유되지 않음
+- SSH 방식은 GitHub Actions 러너 IP가 고정되어 있지 않아 보안 그룹 설정이 애매함
+- EC2 Role에 SSM 권한이 부족하거나 Docker가 설치되어 있지 않아 SSM 배포 명령 실행 실패
+
+#### 해결
+- CI 단계에 테스트용 더미 환경변수 추가
+- `build-and-push` Job에서 `./gradlew clean bootJar`를 다시 실행하여 JAR 생성
+- SSH 배포 방식 대신 `OIDC + AWS Systems Manager Run Command` 방식으로 변경
+- EC2 Role에 `AmazonSSMManagedInstanceCore` 정책 추가
+- EC2에 Docker 설치 후 SSM Run Command를 통해 `docker pull`, `docker run` 실행
+
+#### 느낀 점
+- CI/CD는 단순히 YAML을 작성하는 것이 아니라, 빌드 환경과 실제 배포 환경의 차이를 이해해야 함
+- SSH 포트 개방 없이 배포하기 위해 OIDC와 SSM을 활용하면 보안적으로 더 안전한 자동 배포 구성이 가능함
+
+👉 자세한 정리
+
+https://velog.io/@gpekd5/Cloud-%EA%B3%BC%EC%A0%9C-TroubleShooting-GitHub-Actions-CICD-%EA%B5%AC%EC%84%B1-%EB%B0%8F-%EB%B0%A9%EC%8B%9D-%EA%B0%9C%EC%84%A0-%EA%B3%BC%EC%A0%95
+
+</details>
 
 ---
 
