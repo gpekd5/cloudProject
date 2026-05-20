@@ -12,9 +12,6 @@ jobs:
   # 1. PR / main 공통: 빌드 및 테스트
   ci:
     runs-on: ubuntu-latest
-    env:
-     S3_BUCKET_NAME: test-bucket
-     AWS_REGION: ap-northeast-2
 
     steps:
       # GitHub Repository 코드 가져오기
@@ -36,8 +33,7 @@ jobs:
       - name: Build and test
         run: ./gradlew clean build
         env:
-          S3_BUCKET_NAME: test-bucket
-          AWS_REGION: ap-northeast-2
+          SPRING_PROFILES_ACTIVE: local
 
   # 2. main push일 때만 Docker Hub Push
   build-and-push:
