@@ -39,16 +39,37 @@ jobs:
       - name: Build and test
         run: ./gradlew clean build
 
-  # 2. main push일 때만 Docker Hub Push
+  # 2. main push일 때만 Docker 이미지 빌드 및 Docker Hub Push
   build-and-push:
     needs: ci
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    env:
+      SPRING_PROFILES_ACTIVE: local
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_REGION: ap-northeast-2
+      S3_BUCKET_NAME: test-bucket
 
     steps:
       # GitHub Repository 코드 가져오기
       - name: Checkout source code
         uses: actions/checkout@v4
+
+      # GitHub Actions 실행 환경에 Java 17 설정
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: corretto
+          java-version: 17
+
+      # Linux 환경에서 gradlew 실행 권한 부여
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # Docker 이미지에 포함할 JAR 생성
+      - name: Build jar
+        run: ./gradlew clean bootJar
 
       # Docker Hub 로그인
       - name: Login to Docker Hub
