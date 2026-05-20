@@ -32,6 +32,9 @@ jobs:
       # Spring Boot 애플리케이션 빌드 및 테스트
       - name: Build and test
         run: ./gradlew clean build
+        env:
+          S3_BUCKET_NAME: test-bucket
+          AWS_REGION: ap-northeast-2
 
   # 2. main push일 때만 Docker Hub Push
   build-and-push:
