@@ -4,9 +4,19 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - 'image/**'
+      - '*.md'
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - 'README.md'
+      - 'image/**'
+      - 'docs/**'
+      - '*.md'
 
 permissions:
   id-token: write
