@@ -9,13 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.UUID;
 
 @Service
@@ -27,6 +24,9 @@ public class S3Service {
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
+
+    @Value("${cloud.aws.cloudfront.domain}")
+    private String cloudFrontDomain;
 
     public String uploadProfileImage(Long Id, MultipartFile file) {
 
@@ -74,19 +74,12 @@ public class S3Service {
             throw new BadRequestException("프로필 이미지 경로가 없습니다.");
         }
 
-        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                .bucket(bucketName)
-                .key(key)
-                .build();
+        String normalizedDomain = cloudFrontDomain.endsWith("/")
+                ? cloudFrontDomain.substring(0, cloudFrontDomain.length() - 1)
+                : cloudFrontDomain;
 
-        GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
-                .signatureDuration(Duration.ofDays(7))
-                .getObjectRequest(getObjectRequest)
-                .build();
 
-        return s3Presigner.presignGetObject(presignRequest)
-                .url()
-                .toString();
+        return normalizedDomain + "/" + key;
     }
 
     public void deleteFile(String key) {
