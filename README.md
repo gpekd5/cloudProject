@@ -96,6 +96,52 @@ URL: https://cloudproject-hglfjeklsd-files-331608077829-ap-northeast-2-an.s3.ap-
 
 </details>
 
+<details>
+<summary>LV5. 고가용성 아키텍처와 보안 도메인 연결</summary>
+
+- Private Subnet 환경 구성
+  - EC2와 RDS를 Private Subnet에 새로 구성
+  - RDS는 Public Access를 비활성화
+  - Private EC2에서만 RDS 3306 포트 접근 가능하도록 보안 그룹 설정
+
+- NAT Gateway 구성
+  - Public Subnet에 NAT Gateway 생성
+  - Private EC2가 외부 이미지 Pull 및 패키지 설치를 할 수 있도록 Route Table 설정
+
+- ALB 및 HTTPS 구성
+  - Public Subnet에 ALB 생성
+  - Target Group은 Private EC2의 8080 포트로 연결
+  - Health Check Path는 `/actuator/health`로 설정
+  - ACM 인증서 `*.hgbrain.click`을 HTTPS 443 리스너에 적용
+  - HTTP 80 요청은 HTTPS 443으로 리다이렉트
+
+- Route 53 도메인 연결
+  - `api.hgbrain.click` A 레코드를 생성
+  - Alias로 ALB에 연결
+  - 최종 접속 URL: `https://api.hgbrain.click/actuator/health`
+
+- Auto Scaling Group 구성
+  - Launch Template 생성
+  - User Data를 통해 Docker 설치 및 컨테이너 실행 자동화
+  - ASG를 Private Subnet과 Target Group에 연결
+  - Desired 1 / Min 1 / Max 2로 설정
+
+- 과제 제출 캡처
+  - HTTPS 도메인 접속 결과
+    ![img.png](image/lv5_https_health.png)
+  - 주소
+    - https://api.hgbrain.click/actuator/health
+
+  - Target Group Registered targets Healthy 화면
+    ![img.png](image/lv5_target_group_healthy.png)
+
+</details>
+
+
+
+
+
+
 ---
 
 > ### ⏲️ 개발기간
