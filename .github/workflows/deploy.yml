@@ -32,6 +32,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: test
       AWS_REGION: ap-northeast-2
       S3_BUCKET_NAME: test-bucket
+      CLOUDFRONT_DOMAIN: https://test.cloudfront.net
 
     steps:
       - name: Checkout source code
@@ -60,6 +61,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: test
       AWS_REGION: ap-northeast-2
       S3_BUCKET_NAME: test-bucket
+      CLOUDFRONT_DOMAIN: https://test.cloudfront.net
 
     steps:
       - name: Checkout source code
@@ -122,10 +124,11 @@ jobs:
               "export TEAM_NAME=$(aws ssm get-parameter --region ap-northeast-2 --name /cloudproject/prod/TEAM_NAME --query Parameter.Value --output text)",
               "export S3_BUCKET_NAME=$(aws ssm get-parameter --region ap-northeast-2 --name /cloudproject/prod/S3_BUCKET_NAME --query Parameter.Value --output text)",
               "export AWS_REGION=$(aws ssm get-parameter --region ap-northeast-2 --name /cloudproject/prod/AWS_REGION --query Parameter.Value --output text)",
+              "export CLOUDFRONT_DOMAIN=$(aws ssm get-parameter --region ap-northeast-2 --name /cloudproject/prod/CLOUDFRONT_DOMAIN --query Parameter.Value --output text)",
               "sudo docker pull ${{ secrets.DOCKER_USERNAME }}/cloudproject:latest",
               "sudo docker stop cloudproject || true",
               "sudo docker rm cloudproject || true",
-              "sudo docker run -d --name cloudproject -p 8080:8080 --restart unless-stopped -e SPRING_PROFILES_ACTIVE=prod -e DB_URL=$DB_URL -e DB_USERNAME=$DB_USERNAME -e DB_PASSWORD=$DB_PASSWORD -e TEAM_NAME=$TEAM_NAME -e S3_BUCKET_NAME=$S3_BUCKET_NAME -e AWS_REGION=$AWS_REGION ${{ secrets.DOCKER_USERNAME }}/cloudproject:latest",
+              "sudo docker run -d --name cloudproject -p 8080:8080 --restart unless-stopped -e SPRING_PROFILES_ACTIVE=prod -e DB_URL=$DB_URL -e DB_USERNAME=$DB_USERNAME -e DB_PASSWORD=$DB_PASSWORD -e TEAM_NAME=$TEAM_NAME -e S3_BUCKET_NAME=$S3_BUCKET_NAME -e AWS_REGION=$AWS_REGION -e CLOUDFRONT_DOMAIN=$CLOUDFRONT_DOMAIN ${{ secrets.DOCKER_USERNAME }}/cloudproject:latest",
               "sudo docker ps"
             ]' \
             --query "Command.CommandId" \
