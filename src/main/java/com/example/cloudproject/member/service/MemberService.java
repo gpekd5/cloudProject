@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * 팀원 정보 서비스
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -18,6 +21,12 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    /**
+     * 팀원 등록
+     *
+     * @param request 팀원 등록 요청
+     * @return 팀원 등록 응답
+     */
     @Transactional
     public CreateMemberResponseDto createMember(CreateMemberRequestDto request) {
 
@@ -29,20 +38,23 @@ public class MemberService {
 
         Member saveMember = memberRepository.save(member);
 
-        log.info("[API - LOG] 팀원 등록 완료 ID = {}", saveMember.getId());
+        log.info("[BUSINESS EVENT] 팀원 저장 memberId={}", saveMember.getId());
 
         return CreateMemberResponseDto.from(saveMember);
     }
 
+    /**
+     * 팀원 단건 조회
+     *
+     * @param memberId 팀원 ID
+     * @return 팀원 조회 응답
+     */
     @Transactional(readOnly = true)
-    public GetMemberResponseDto findById(Long memberId){
+    public GetMemberResponseDto findById(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new NotFoundException( "ID "+ memberId + " 는 존재하지 않는 항목입니다.")
+                () -> new NotFoundException("ID " + memberId + " 는 존재하지 않는 항목입니다.")
         );
-
-        log.info("[API - LOG] 팀원 단건 조회 완료 ID = {}", member.getId());
 
         return GetMemberResponseDto.from(member);
     }
-
 }

@@ -6,12 +6,13 @@ import com.example.cloudproject.member.dto.response.GetMemberResponseDto;
 import com.example.cloudproject.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
+/**
+ * 팀원 정보 API
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/members")
@@ -19,17 +20,33 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    //post
+    /**
+     * 팀원 등록
+     *
+     * @param request 팀원 등록 요청
+     * @return 팀원 등록 응답
+     */
     @PostMapping
-    public ResponseEntity<CreateMemberResponseDto> createMember(@Valid @RequestBody CreateMemberRequestDto request) {
-        log.info("[API - LOG] 팀원 등록 요청");
-        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.createMember(request));
+    public ResponseEntity<CreateMemberResponseDto> createMember(
+            @Valid @RequestBody CreateMemberRequestDto request
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(memberService.createMember(request));
     }
 
-    //get
+    /**
+     * 팀원 단건 조회
+     *
+     * @param memberId 팀원 ID
+     * @return 팀원 조회 응답
+     */
     @GetMapping("/{memberId}")
-    public ResponseEntity<GetMemberResponseDto> findById(@PathVariable Long memberId) {
-        log.info("[API - LOG] 팀원 단건 조회 요청");
-        return ResponseEntity.status(HttpStatus.OK).body(memberService.findById(memberId));
+    public ResponseEntity<GetMemberResponseDto> findById(
+            @PathVariable Long memberId
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(memberService.findById(memberId));
     }
 }
