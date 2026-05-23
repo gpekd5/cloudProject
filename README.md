@@ -137,7 +137,31 @@ URL: https://cloudproject-hglfjeklsd-files-331608077829-ap-northeast-2-an.s3.ap-
 
 </details>
 
+<details>
+<summary>LV6. 글로벌 성능 최적화 CloudFront CDN 적용</summary>
 
+- CloudFront 배포 구성
+  - S3 버킷을 Origin으로 하는 CloudFront 배포 생성
+  - S3 버킷은 Public Access를 차단한 상태로 유지
+  - CloudFront만 S3 객체를 조회할 수 있도록 버킷 정책 설정
+
+- 이미지 조회 방식 변경
+  - 기존 S3 Presigned URL 반환 방식에서 CloudFront 도메인 기반 URL 반환 방식으로 수정
+  - `CLOUDFRONT_DOMAIN` 값을 Parameter Store에 추가
+  - 프로필 이미지 조회 API 응답이 CloudFront URL을 반환하도록 변경
+
+- 최종 검증
+  - 프로필 이미지 조회 API 호출 시 CloudFront URL 반환 확인
+  - 반환된 CloudFront 이미지 URL을 브라우저에서 직접 조회 확인
+
+- 과제 제출 캡처
+  - CloudFront 이미지 URL 조회 결과
+    ![img.png](image/lv6_postman.png)
+
+  - 주소
+    - https://d36ddbxe0gdvp6.cloudfront.net/uploads/profiles/1/a87d996c-8af8-4ff2-9cd3-43883f2925e9-profile_1.png
+![img.png](image/lv6_image.png)
+</details>
 
 
 
@@ -244,6 +268,37 @@ https://velog.io/@gpekd5/Cloud-%EA%B3%BC%EC%A0%9C-TroubleShooting-%EB%B0%A9%ED%9
 👉 자세한 정리
 
 https://velog.io/@gpekd5/Cloud-%EA%B3%BC%EC%A0%9C-TroubleShooting-GitHub-Actions-CICD-%EA%B5%AC%EC%84%B1-%EB%B0%8F-%EB%B0%A9%EC%8B%9D-%EA%B0%9C%EC%84%A0-%EA%B3%BC%EC%A0%95
+
+</details>
+
+<details>
+<summary>4. ASG 적용 후 인스턴스별 배포 버전 불일치 문제</summary>
+
+#### 문제
+- LV6에서 프로필 이미지 조회 API를 CloudFront URL 반환 방식으로 수정
+- Postman으로 같은 API를 여러 번 호출했을 때 응답 결과가 번갈아 출력됨
+- 한 번은 CloudFront URL, 다른 한 번은 기존 S3 Presigned URL 반환
+
+#### 원인
+- ALB Target Group에 EC2 인스턴스 2대가 등록된 상태
+- 기존 CI/CD 배포 방식은 특정 EC2 인스턴스 1대에만 Docker 컨테이너 재배포
+- 한 인스턴스는 최신 버전, 다른 인스턴스는 구버전 컨테이너가 실행 중인 상태
+- ALB가 요청을 분산하면서 인스턴스별로 다른 응답 반환
+
+#### 해결
+- 각 EC2 인스턴스에 접속하여 컨테이너 상태와 API 응답 직접 확인
+- `curl localhost:8080/api/members/{id}/profile-image`로 인스턴스별 응답 비교
+- 구버전 컨테이너가 실행 중인 인스턴스도 최신 Docker 이미지로 재실행
+- 이후 모든 요청에서 CloudFront URL 반환 확인
+
+#### 느낀 점
+- ASG 환경에서는 특정 EC2 1대만 배포하면 신버전과 구버전이 섞일 수 있음
+- ALB + Target Group 구조에서는 모든 인스턴스의 배포 버전 일치 여부 확인이 중요함
+- 추후에는 ASG Instance Refresh 또는 태그 기반 SSM Run Command로 전체 인스턴스 배포 방식 개선 필요
+
+👉 자세한 정리
+
+https://velog.io/@gpekd5/Cloud-%EA%B3%BC%EC%A0%9C-TroubleShooting-ASG-%EC%A0%81%EC%9A%A9-%ED%9B%84-%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4%EB%B3%84-%EB%B0%B0%ED%8F%AC-%EB%B2%84%EC%A0%84-%EB%B6%88%EC%9D%BC%EC%B9%98-%EB%AC%B8%EC%A0%9C
 
 </details>
 
