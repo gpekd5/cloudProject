@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 
+/**
+ * 팀원 등록 요청 DTO
+ */
 @Getter
 public class CreateMemberRequestDto {
 
@@ -22,6 +25,13 @@ public class CreateMemberRequestDto {
             message = "올바른 MBTI 형식이 아닙니다.")
     private final String mbti;
 
+    /**
+     * 팀원 등록 요청 생성자
+     *
+     * @param name 팀원 이름
+     * @param age 팀원 나이
+     * @param mbti 팀원 MBTI
+     */
     public CreateMemberRequestDto(String name, Integer age, String mbti) {
         this.name = name;
         this.age = age;

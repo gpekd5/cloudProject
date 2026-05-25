@@ -21,7 +21,7 @@ public class MemberController {
     private final MemberService memberService;
 
     /**
-     * 팀원 등록
+     * 팀원 등록 API
      *
      * @param request 팀원 등록 요청
      * @return 팀원 등록 응답
@@ -36,7 +36,7 @@ public class MemberController {
     }
 
     /**
-     * 팀원 단건 조회
+     * 팀원 단건 조회 API
      *
      * @param memberId 팀원 ID
      * @return 팀원 조회 응답

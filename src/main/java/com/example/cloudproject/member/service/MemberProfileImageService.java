@@ -23,7 +23,7 @@ public class MemberProfileImageService {
     private final S3Service s3Service;
 
     /**
-     * 프로필 이미지 업로드
+     * 프로필 이미지 교체 및 기존 이미지 정리
      *
      * @param memberId 팀원 ID
      * @param file 프로필 이미지 파일
@@ -49,7 +49,7 @@ public class MemberProfileImageService {
     }
 
     /**
-     * 프로필 이미지 URL 조회
+     * 프로필 이미지 조회 URL 응답 생성
      *
      * @param memberId 팀원 ID
      * @return 프로필 이미지 URL 응답
