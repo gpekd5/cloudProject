@@ -302,6 +302,31 @@ https://velog.io/@gpekd5/Cloud-%EA%B3%BC%EC%A0%9C-TroubleShooting-ASG-%EC%A0%81%
 
 </details>
 
+<details>
+<summary>5. API 로그 처리 위치 개선</summary>
+
+#### 문제
+- 기존에는 Controller에서 요청 로그를 남기고, Service에서 일부 완료 로그를 남기는 구조
+- `@RequestBody` 파싱 실패나 `@Valid` 검증 실패처럼 Controller 진입 전 발생하는 예외의 경우 요청 로그가 남지 않을 수 있음
+- Service의 완료 로그는 API 응답 완료 시점이 아니라 특정 비즈니스 로직 종료 시점에 가까움
+
+#### 원인
+- 요청/응답 흐름 로그와 비즈니스 이벤트 로그의 역할이 분리되지 않음
+- Controller, Service에 로그가 분산되어 API 전체 흐름 파악이 어려움
+
+#### 해결
+- `OncePerRequestFilter` 기반 `ApiLoggingFilter` 추가
+- API 요청 Method, URI, 응답 Status, 처리 시간을 공통 로그로 기록
+- Actuator Health Check 요청은 로그 대상에서 제외
+- Controller의 단순 요청 로그 제거
+- Service에는 저장, 수정, 삭제, 파일 처리 등 의미 있는 비즈니스 이벤트 로그만 유지
+
+#### 느낀 점
+- API 요청/응답 전체 흐름은 AOP보다 Filter에서 처리하는 것이 더 적절하다고 판단
+- 예외 로그는 `GlobalExceptionHandler`, 비즈니스 이벤트 로그는 Service로 역할 분리 필요
+- 추후 로그량 증가 시 동기/비동기 로그 방식과 Logback AsyncAppender 적용 검토 예정
+
+</details>
 ---
 
 > ### 📘 개념 학습
