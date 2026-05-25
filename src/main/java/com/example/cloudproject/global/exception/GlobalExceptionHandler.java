@@ -8,10 +8,19 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * 애플리케이션 전역 예외 응답 처리기
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /**
+     * 서비스 계층 예외의 HTTP 응답 변환
+     *
+     * @param ex 서비스 계층 예외
+     * @return 예외 상태 코드와 메시지 응답
+     */
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<String> handleServiceException(ServiceException ex) {
 
@@ -25,6 +34,12 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
+    /**
+     * 요청 검증 실패 응답 변환
+     *
+     * @param ex 요청 검증 실패 예외
+     * @return 검증 실패 메시지 응답
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         String errorMessage = ex.getBindingResult().getFieldErrors().stream()
@@ -39,6 +54,12 @@ public class GlobalExceptionHandler {
                 .body(errorMessage);
     }
 
+    /**
+     * 예상하지 못한 예외의 공통 응답 변환
+     *
+     * @param ex 예상하지 못한 예외
+     * @return 서버 오류 메시지 응답
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception ex) {
 

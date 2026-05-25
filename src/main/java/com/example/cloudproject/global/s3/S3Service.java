@@ -15,6 +15,9 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * 프로필 이미지 S3 저장소 연동 서비스
+ */
 @Service
 @RequiredArgsConstructor
 public class S3Service {
@@ -28,6 +31,13 @@ public class S3Service {
     @Value("${cloud.aws.cloudfront.domain}")
     private String cloudFrontDomain;
 
+    /**
+     * 프로필 이미지 검증 및 S3 업로드
+     *
+     * @param Id 팀원 ID
+     * @param file 프로필 이미지 파일
+     * @return S3 객체 키
+     */
     public String uploadProfileImage(Long Id, MultipartFile file) {
 
         if (file == null || file.isEmpty()) {
@@ -69,6 +79,12 @@ public class S3Service {
         }
     }
 
+    /**
+     * CloudFront 기반 프로필 이미지 URL 생성
+     *
+     * @param key S3 객체 키
+     * @return CloudFront 이미지 URL
+     */
     public String createDownloadUrl(String key) {
         if (key == null || key.isBlank()) {
             throw new BadRequestException("프로필 이미지 경로가 없습니다.");
@@ -82,6 +98,11 @@ public class S3Service {
         return normalizedDomain + "/" + key;
     }
 
+    /**
+     * S3 객체 삭제 요청
+     *
+     * @param key S3 객체 키
+     */
     public void deleteFile(String key) {
         if (key == null || key.isBlank()) {
             return;

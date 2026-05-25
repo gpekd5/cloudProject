@@ -21,6 +21,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * 팀원 정보 서비스 단위 테스트
+ */
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
 
@@ -30,6 +33,9 @@ class MemberServiceTest {
     @InjectMocks
     private MemberService memberService;
 
+    /**
+     * 팀원 등록 성공 검증
+     */
     @Test
     @DisplayName("팀원 등록 성공")
     void createMember_success() {
@@ -58,6 +64,9 @@ class MemberServiceTest {
         verify(memberRepository, times(1)).save(any(Member.class));
     }
 
+    /**
+     * 팀원 단건 조회 성공 검증
+     */
     @Test
     @DisplayName("팀원 단건 조회 성공")
     void findById_success() {
@@ -79,6 +88,9 @@ class MemberServiceTest {
         verify(memberRepository, times(1)).findById(1L);
     }
 
+    /**
+     * 존재하지 않는 팀원 조회 예외 검증
+     */
     @Test
     @DisplayName("존재하지 않는 팀원 조회 시 예외 발생")
     void findById_notFound() {

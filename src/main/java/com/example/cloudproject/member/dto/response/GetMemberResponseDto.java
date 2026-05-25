@@ -3,6 +3,9 @@ package com.example.cloudproject.member.dto.response;
 import com.example.cloudproject.member.entity.Member;
 import lombok.Getter;
 
+/**
+ * 팀원 조회 응답 DTO
+ */
 @Getter
 public class GetMemberResponseDto {
 
@@ -11,6 +14,14 @@ public class GetMemberResponseDto {
     private final Integer age;
     private final String mbti;
 
+    /**
+     * 팀원 조회 응답 생성자
+     *
+     * @param id 팀원 ID
+     * @param name 팀원 이름
+     * @param age 팀원 나이
+     * @param mbti 팀원 MBTI
+     */
     public GetMemberResponseDto(Long id, String name, Integer age, String mbti) {
         this.id = id;
         this.name = name;
@@ -18,6 +29,12 @@ public class GetMemberResponseDto {
         this.mbti = mbti;
     }
 
+    /**
+     * 팀원 엔티티 기반 조회 응답 변환
+     *
+     * @param member 팀원 엔티티
+     * @return 팀원 조회 응답
+     */
     public static GetMemberResponseDto from(Member member) {
         return new GetMemberResponseDto(
                 member.getId(),

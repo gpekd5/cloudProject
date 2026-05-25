@@ -19,7 +19,7 @@ public class MemberProfileImageController {
     private final MemberProfileImageService memberProfileImageService;
 
     /**
-     * 프로필 이미지 업로드
+     * 프로필 이미지 업로드 API
      *
      * @param memberId 팀원 ID
      * @param file 프로필 이미지 파일
@@ -38,7 +38,7 @@ public class MemberProfileImageController {
     }
 
     /**
-     * 프로필 이미지 URL 조회
+     * 프로필 이미지 URL 조회 API
      *
      * @param memberId 팀원 ID
      * @return 프로필 이미지 URL 응답

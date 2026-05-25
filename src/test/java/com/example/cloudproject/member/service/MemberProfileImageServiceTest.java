@@ -20,6 +20,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+/**
+ * 프로필 이미지 서비스 단위 테스트
+ */
 @ExtendWith(MockitoExtension.class)
 class MemberProfileImageServiceTest {
 
@@ -32,6 +35,9 @@ class MemberProfileImageServiceTest {
     @InjectMocks
     private MemberProfileImageService memberProfileImageService;
 
+    /**
+     * 프로필 이미지 업로드 성공 검증
+     */
     @Test
     @DisplayName("프로필 이미지 업로드 성공")
     void uploadProfileImage_success() {
@@ -63,6 +69,9 @@ class MemberProfileImageServiceTest {
         verify(s3Service, never()).deleteFile(anyString());
     }
 
+    /**
+     * 기존 프로필 이미지 삭제 검증
+     */
     @Test
     @DisplayName("기존 프로필 이미지가 있으면 삭제 후 새 이미지로 변경")
     void uploadProfileImage_deleteOldImage() {
@@ -95,6 +104,9 @@ class MemberProfileImageServiceTest {
         verify(s3Service, times(1)).deleteFile("uploads/profiles/1/old-profile.png");
     }
 
+    /**
+     * 존재하지 않는 팀원 프로필 이미지 업로드 예외 검증
+     */
     @Test
     @DisplayName("존재하지 않는 팀원 프로필 이미지 업로드 시 예외 발생")
     void uploadProfileImage_memberNotFound() {
@@ -120,6 +132,9 @@ class MemberProfileImageServiceTest {
         verify(s3Service, never()).deleteFile(anyString());
     }
 
+    /**
+     * 프로필 이미지 URL 조회 성공 검증
+     */
     @Test
     @DisplayName("프로필 이미지 URL 조회 성공")
     void getProfileImageUrl_success() {
@@ -144,6 +159,9 @@ class MemberProfileImageServiceTest {
         verify(s3Service, times(1)).createDownloadUrl("uploads/profiles/1/profile.png");
     }
 
+    /**
+     * 프로필 이미지 미등록 예외 검증
+     */
     @Test
     @DisplayName("등록된 프로필 이미지가 없으면 예외 발생")
     void getProfileImageUrl_imageNotFound() {

@@ -11,7 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 /**
- * API 요청/응답 공통 로그 필터
+ * API 요청/응답 로그와 처리 시간 기록 필터
  */
 @Slf4j
 @Component
@@ -20,7 +20,7 @@ public class ApiLoggingFilter extends OncePerRequestFilter {
     private static final String ACTUATOR_PATH = "/actuator";
 
     /**
-     * 필터 제외 대상 확인
+     * Actuator 경로 로깅 제외 여부
      *
      * @param request HTTP 요청
      * @return 필터 제외 여부
@@ -31,7 +31,7 @@ public class ApiLoggingFilter extends OncePerRequestFilter {
     }
 
     /**
-     * API 요청/응답 로그 처리
+     * API 요청/응답 로그 및 처리 시간 측정
      *
      * @param request HTTP 요청
      * @param response HTTP 응답

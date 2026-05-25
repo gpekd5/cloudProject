@@ -1,12 +1,35 @@
-## 🛠️ Cloud Project
+# 🛠️ Cloud Project
 
-> ### 👨‍🏫 프로젝트 소개
+## 👨‍🏫 프로젝트 소개
 
-#### Spring Boot 애플리케이션을 AWS에 배포하며 클라우드 기반 백엔드 구조를 학습한 프로젝트입니다.
+Spring Boot 애플리케이션을 AWS에 배포하며 클라우드 기반 백엔드 구조를 학습한 프로젝트입니다.
 
-#### EC2, RDS, S3, Parameter Store를 활용해 운영 환경에서 필요한 인프라 구성과 배포 흐름을 경험했습니다.
+처음에는 팀원 정보 저장/조회 API로 시작했고, 이후 RDS, S3, Docker, GitHub Actions, ALB, CloudFront를 단계별로 적용하며 개선했습니다.
 
----
+## ⏲️ 개발 기간
+
+- 2026.05.18 ~ 2026.05.25
+
+## 🧰 기술 스택
+
+| 구분 | 사용 기술 |
+|---|---|
+| Language | Java 17 |
+| Backend | Spring Boot, Spring Web MVC |
+| Data Access | Spring Data JPA |
+| Database | H2, MySQL, AWS RDS |
+| Cloud | EC2, RDS, S3, Parameter Store, IAM, SSM, ALB, ACM, Route 53, ASG, CloudFront |
+| DevOps | Docker, Docker Hub, GitHub Actions, OIDC, SSM Run Command |
+| Test | JUnit 5, Mockito |
+| Build / Tool | Gradle, Lombok |
+| IDE / VCS | IntelliJ IDEA, Git, GitHub |
+
+## ✨ 주요 기능
+
+- 팀원 정보 등록 및 단건 조회 API
+- 프로필 이미지 S3 업로드 및 CloudFront URL 조회
+- API 요청/응답 공통 로그와 전역 예외 처리
+- Docker 이미지 기반 배포 및 GitHub Actions CI/CD 구성
 
 > ### 📌 주요 개선 사항 (과제 제출 요구사항 포함)
 
@@ -163,31 +186,6 @@ URL: https://cloudproject-hglfjeklsd-files-331608077829-ap-northeast-2-an.s3.ap-
 ![img.png](image/lv6_image.png)
 </details>
 
-
-
-
----
-
-> ### ⏲️ 개발기간
-
-- 2026.05.18 ~ 2026.05.25
-
----
-
-> ### 📚️ 기술스택
-
-| 구분 | 사용 기술 |
-|---|---|
-| Language | Java 17 |
-| Backend | Spring Boot, Spring Web |
-| Data Access | Spring Data JPA |
-| Database | MySQL |
-| Validation | Spring Boot Validation |
-| Test | JUnit 5, Mockito |
-| Build / Tool | Gradle, Lombok |
-| IDE | IntelliJ IDEA |
-| Version Control | Git, GitHub |
-
 ---
 
 > ### 🔥 Trouble Shooting
@@ -327,13 +325,12 @@ https://velog.io/@gpekd5/Cloud-%EA%B3%BC%EC%A0%9C-TroubleShooting-ASG-%EC%A0%81%
 - 추후 로그량 증가 시 동기/비동기 로그 방식과 Logback AsyncAppender 적용 검토 예정
 
 </details>
----
-
-> ### 📘 개념 학습
-
-#### 1.
 
 ---
 
-> ### ✅ 회고
+## ✅ 회고
+
+- API만 구현하는 것과 실제 AWS 환경에 올려 운영하는 것은 다르다는 점을 많이 느꼈습니다.
+- 특히 보안 그룹, 환경변수, 배포 방식처럼 코드 밖의 설정도 애플리케이션 안정성에 큰 영향을 준다는 것을 경험했습니다.
+- 다음에는 ASG 전체 인스턴스 배포 방식과 테스트 환경 설정 분리를 더 깔끔하게 정리해보고 싶습니다.
 
